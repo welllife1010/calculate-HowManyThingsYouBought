@@ -13,7 +13,15 @@ var model = (function(){
 
 	var data = {
 		allItems: [],
-		total: 0
+		totals: 0
+	};
+
+	var calculateTotal = function() {
+		var sum = 0;
+		data.allItems.forEach(function(currentVal){
+			sum += currentVal.value;
+		});
+		data.totals = sum;
 	};
 
 	return {
@@ -37,6 +45,13 @@ var model = (function(){
 			return newItem;
 		},
 
+		calculateSum: function(){
+			calculateTotal();
+			return {
+				sum: data.totals
+			}
+		},
+
 		test: function(){
 			console.log(data);
 		}
@@ -50,7 +65,8 @@ var view = (function(){
 		name: '.name',
 		value: '.value',
 		btn: '.bought_btn',
-		list: '.bought_list'
+		list: '.bought_list',
+		sumLabel: '.total_value'
 	};
 
 	return {
@@ -82,6 +98,10 @@ var view = (function(){
 			inputArray[0].focus();
 		},
 
+		displaySum: function(object){
+			document.querySelector(DOMstrings.sumLabel).textContent = object.sum + '元';
+		},
+
 		getDOMstrings: function(){
 			return DOMstrings;
 		}
@@ -101,6 +121,12 @@ var controller = (function(m, v){
 		});
 	};
 
+	var updateTotal = function(){
+		var sum = model.calculateSum();
+		// console.log(sum);
+		view.displaySum(sum);
+	};
+
 	var addItem = function(){
 		var input = view.getInfo();
 		// console.log(input);
@@ -108,12 +134,14 @@ var controller = (function(m, v){
 			var newItem = model.addItem(input.name, input.value); 
 			view.addListItem(newItem);
 			view.clearInput();
+			updateTotal();
 		}
 	};
 
 	return {
 		init: function(){
 			console.log('App started.');
+			view.displaySum({sum: 0});
 			setupEventListener();
 		}
 	}
