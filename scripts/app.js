@@ -66,7 +66,8 @@ var view = (function(){
 		value: '.value',
 		btn: '.bought_btn',
 		list: '.bought_list',
-		sumLabel: '.total_value'
+		sumLabel: '.total_value',
+		container: '.container'
 	};
 
 	return {
@@ -119,6 +120,12 @@ var controller = (function(m, v){
 				addItem();
 			}
 		});
+		document.querySelector(DOMstrings.container).addEventListener('click', deleteItem);
+	};
+
+	var deleteItem = function(event){
+		var itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
+		console.log(itemID);
 	};
 
 	var updateTotal = function(){
