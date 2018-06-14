@@ -76,6 +76,12 @@ var view = (function(){
 		container: '.container'
 	};
 
+	var formatting = function(number){
+		number = number.toFixed(2);
+		number = number.replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+		return number;
+	};
+
 	return {
 		getInfo: function(){
 			return {
@@ -90,7 +96,7 @@ var view = (function(){
 			var html = '<div class="item clearfix" id="%id%"><div class="item_name">%name%</div><div class="right clearfix"><div class="item_value">%value%</div><div class="delete"><button class="delete_btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
 			newHTML = html.replace('%id%', object.id);
 			newHTML = newHTML.replace('%name%', object.name);
-			newHTML = newHTML.replace('%value%', object.value);
+			newHTML = newHTML.replace('%value%', formatting(object.value) + '元');
 			document.querySelector(element).insertAdjacentHTML('beforeend', newHTML);
 		},
 
@@ -112,7 +118,7 @@ var view = (function(){
 		},
 
 		displaySum: function(object){
-			document.querySelector(DOMstrings.sumLabel).textContent = object.sum + '元';
+			document.querySelector(DOMstrings.sumLabel).textContent = formatting(object.sum) + '元';
 		},
 
 		getDOMstrings: function(){
