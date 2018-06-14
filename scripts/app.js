@@ -25,24 +25,30 @@ var model = (function(){
 	};
 
 	return {
-		addItem: function(name, value) { //create a newItem object and send/save to controller addItem mathod's newItem variable
-			
+		addItem: function(name, value) { //create a newItem object and send/save to controller addItem mathod's newItem variable	
 			var ID;
-
 			// [1,2,3,4,5]  next 6 ID = array.length + 1
 			// [1,2,4,5,6]  next 7 ID = last_element.id + 1 
-
 			if(data.allItems.length > 0){
 				ID = data.allItems[data.allItems.length - 1].id + 1;
 			} else {
 				ID = 0;
-			}
-			
+			}			
 			var newItem = new item(ID, name, value);
-
 			data.allItems.push(newItem);
+			return newItem; //object
+		},
 
-			return newItem;
+		deleteItem: function(id){
+			var ids = data.allItems.map(function(currentVal){ //create a new array of only (data.allItems') ids in it
+				return currentVal.id;
+			});
+			var index = ids.indexOf(parseInt(id, 10)); //index number of data.allItems which the users click to delete
+			// console.log(index);
+			if(index >= 0){
+				data.allItems.splice(index, 1);
+			}			
+			// console.log(ids);
 		},
 
 		calculateSum: function(){
@@ -78,7 +84,7 @@ var view = (function(){
 			};
 		},
 
-		addListItem: function(object){
+		addListItem: function(object){ //add the user input (newly created) object into html
 			var newHTML;
 			var element = DOMstrings.list;
 			var html = '<div class="item clearfix" id="%id%"><div class="item_name">%name%</div><div class="right clearfix"><div class="item_value">%value%</div><div class="delete"><button class="delete_btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
@@ -124,8 +130,10 @@ var controller = (function(m, v){
 	};
 
 	var deleteItem = function(event){
-		var itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
-		console.log(itemID);
+		//event.target's return value - a reference to the object on which the element originally occured
+		var itemID = event.target.parentNode.parentNode.parentNode.parentNode.id; //get <div class="item clearfix" id="%id%">'s id value
+		// console.log(typeof itemID); //string
+		model.deleteItem(itemID);
 	};
 
 	var updateTotal = function(){
@@ -138,7 +146,7 @@ var controller = (function(m, v){
 		var input = view.getInfo();
 		// console.log(input);
 		if(input.name !== '' && !isNaN(input.value) && input.value > 0){
-			var newItem = model.addItem(input.name, input.value); 
+			var newItem = model.addItem(input.name, input.value); //create a new (item) object
 			view.addListItem(newItem);
 			view.clearInput();
 			updateTotal();
