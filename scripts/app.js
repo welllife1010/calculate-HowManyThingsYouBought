@@ -94,6 +94,12 @@ var view = (function(){
 			document.querySelector(element).insertAdjacentHTML('beforeend', newHTML);
 		},
 
+		deleteListItem: function(id){
+			var element = document.getElementById(id);
+			// console.log(element.parentNode);
+			element.parentNode.removeChild(element);
+		},
+
 		clearInput: function(){
 			var inputs = document.querySelectorAll(DOMstrings.name + ',' + DOMstrings.value);
 			// console.log(inputs);
@@ -134,10 +140,12 @@ var controller = (function(m, v){
 		var itemID = event.target.parentNode.parentNode.parentNode.parentNode.id; //get <div class="item clearfix" id="%id%">'s id value
 		// console.log(typeof itemID); //string
 		model.deleteItem(itemID);
+		view.deleteListItem(itemID);
+		updateTotal();
 	};
 
 	var updateTotal = function(){
-		var sum = model.calculateSum();
+		var sum = model.calculateSum(); // returns data.totals as an object
 		// console.log(sum);
 		view.displaySum(sum);
 	};
