@@ -1,4 +1,4 @@
-// MVC - model(數據生成, 數據結構模型), view(顯示), controller(數據傳遞媒介)
+// MVC - model(數據生成, 數據結構模型), view(外觀, 顯示), controller(初始化, 數據傳遞媒介)
 //API
 var model = (function(){
 
@@ -73,7 +73,8 @@ var view = (function(){
 		btn: '.bought_btn',
 		list: '.bought_list',
 		sumLabel: '.total_value',
-		container: '.container'
+		container: '.container',
+		month:'.month'
 	};
 
 	var formatting = function(number){
@@ -119,6 +120,13 @@ var view = (function(){
 
 		displaySum: function(object){
 			document.querySelector(DOMstrings.sumLabel).textContent = formatting(object.sum) + '元';
+		},
+
+		displayMonth: function(){
+			var now = new Date();
+			var year = now.getFullYear();
+			var month = now.getMonth();
+			document.querySelector(DOMstrings.month).textContent = year + '年' + month + '月';
 		},
 
 		getDOMstrings: function(){
@@ -170,6 +178,7 @@ var controller = (function(m, v){
 	return {
 		init: function(){
 			console.log('App started.');
+			view.displayMonth();
 			view.displaySum({sum: 0});
 			setupEventListener();
 		}
