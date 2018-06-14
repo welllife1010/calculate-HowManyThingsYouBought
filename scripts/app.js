@@ -39,13 +39,13 @@ var model = (function(){
 			return newItem; //object
 		},
 
-		deleteItem: function(id){
-			var ids = data.allItems.map(function(currentVal){ //create a new array of only (data.allItems') ids in it
+		deleteItem: function(id){ // the id attribute of the div that the user click to delete
+			var ids = data.allItems.map(function(currentVal){ //create a new array of only data.allItems' ids (data.allItems.id) in it
 				return currentVal.id;
 			});
-			var index = ids.indexOf(parseInt(id, 10)); //index number of data.allItems which the users click to delete
+			var index = ids.indexOf(parseInt(id, 10)); //index number/position of id(itemID) in data.allItems which the users click to delete
 			// console.log(index);
-			if(index >= 0){
+			if(index >= 0){ //make sure that the id attribute of the div exist in the data.allItems
 				data.allItems.splice(index, 1);
 			}			
 			// console.log(ids);
