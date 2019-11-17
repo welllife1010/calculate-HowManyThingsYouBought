@@ -1,1 +1,1 @@
-# calculate-how-many-things-you-bought
+# calculate-grocery
